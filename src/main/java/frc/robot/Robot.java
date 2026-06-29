@@ -94,7 +94,7 @@ public class Robot extends LoggedRobot {
 	private boolean masterControl = true;
 	private Angle hoodAngle = Degrees.of(0);
 	private Angle turretAngle = Degrees.of(0);
-	private	AngularVelocity speed = RPM.of(1250);
+	private	AngularVelocity speed = RPM.of(500);
 
   public Robot() {
 
@@ -267,13 +267,13 @@ public class Robot extends LoggedRobot {
 
   public void configureBindings() {
 		Trigger bothBumpers = m_masterController.rightBumper().and(m_masterController.leftBumper());
-		bothBumpers.onTrue(Commands.runOnce(() -> setMaster(false)));
-		bothBumpers.onFalse(Commands.parallel(Commands.runOnce(() -> setMaster(true)), m_robotCommands.idle()));
+		bothBumpers.whileTrue(Commands.run(() -> setMaster(false)));
+		bothBumpers.whileFalse(Commands.parallel(Commands.run(() -> setMaster(true)), m_robotCommands.idle()));
 
     m_masterController.a().onTrue(m_robotCommands.idle());
 		m_masterController.b().onTrue(Commands.runOnce(() -> m_drive.resetPose(new Pose2d())));
-		m_masterController.povUp().onTrue(Commands.runOnce(() -> speed = speed.plus(RPM.of(250))));
-		m_masterController.povDown().onTrue(Commands.runOnce(() -> speed = speed.minus(RPM.of(250))));
+		m_masterController.povUp().onTrue(Commands.runOnce(() -> speed = speed.plus(RPM.of(100))));
+		m_masterController.povDown().onTrue(Commands.runOnce(() -> speed = speed.minus(RPM.of(100))));
 
 		m_masterController.rightTrigger().whileTrue(m_robotCommands.intake()).onFalse(m_robotCommands.idle());
 		m_operatorController.rightTrigger().and(this::masterInactive).whileTrue(m_robotCommands.intake()).onFalse(m_robotCommands.idle());
