@@ -287,7 +287,11 @@ public class Robot extends LoggedRobot {
       hoodAngle = Degrees.of(MathUtil.clamp(hoodAngle.in(Degrees) + 20.0 /** <- deg/sec */ * 0.02 * -m_operatorController.getLeftY(), 0, 40));
     }
 
-		if (!masterControl && (Math.abs(m_operatorController.getRightX()) > 0.1 || Math.abs(m_operatorController.getRightY()) > 0.1)) {
+		double x = m_operatorController.getRightX();
+
+		double y = m_operatorController.getRightY();
+
+		if (!masterControl && (Math.hypot(x, y) > 0.9)) {
 			turretAngle = (Radians.of(Math.atan2(-m_operatorController.getRightY(), m_operatorController.getRightX()))).minus(Degrees.of(90)).minus(m_drive.getPose().getRotation().getMeasure());
 		}
 	}
