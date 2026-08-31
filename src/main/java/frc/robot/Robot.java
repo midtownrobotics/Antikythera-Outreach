@@ -289,10 +289,8 @@ public class Robot extends LoggedRobot {
 
 		double x = m_operatorController.getRightX();
 
-		double y = m_operatorController.getRightY();
-
-		if (!masterControl && (Math.hypot(x, y) > 0.9)) {
-			turretAngle = (Radians.of(Math.atan2(-m_operatorController.getRightY(), m_operatorController.getRightX()))).minus(Degrees.of(90)).minus(m_drive.getPose().getRotation().getMeasure());
+		if (!masterControl && Math.abs(x) > 0.1) {
+			turretAngle = Degrees.of(MathUtil.clamp(turretAngle.in(Degrees) + 90.0 /** <- deg/sec */ * 0.02 * x, -180, 180));
 		}
 	}
 
