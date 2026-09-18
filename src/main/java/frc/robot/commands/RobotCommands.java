@@ -35,6 +35,8 @@ public class RobotCommands {
   private final RobotState m_state;
   private final DriveCommands m_driveCommands;
 
+	private final double multipler = 0.1;
+
   public RobotCommands(
       Drive drive,
       IntakePivot intakePivot,
@@ -46,6 +48,7 @@ public class RobotCommands {
       Flywheel shooter,
       Hood hood,
       RobotState state,
+			Supplier<Boolean> children,
       Supplier<CommandXboxController> controls) {
     m_intakePivot = intakePivot;
     m_intakeRoller = intakeRoller;
@@ -55,8 +58,8 @@ public class RobotCommands {
     m_shooter = shooter;
     m_hood = hood;
     m_state = state;
-    m_driveCommands = new DriveCommands(drive, () -> -controls.get().getLeftX(), () -> -controls.get().getLeftY(),
-        () -> -controls.get().getRightX(), m_state);
+    m_driveCommands = new DriveCommands(drive, () -> -controls.get().getLeftX() * (children.get() ? multipler : 1), () -> -controls.get().getLeftY() * (children.get() ? multipler : 1),
+        () -> -controls.get().getRightX() * (children.get() ? 0.3 : 1), m_state);
   }
 
   public Command stowIntake() {

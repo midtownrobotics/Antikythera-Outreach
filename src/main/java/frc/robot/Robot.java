@@ -2,7 +2,6 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
-import static edu.wpi.first.units.Units.Radians;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -202,6 +201,7 @@ public class Robot extends LoggedRobot {
         m_shooter,
         m_hood,
         m_state,
+				this::masterInactive,
 				() -> (masterControl ? m_masterController : m_driveController));
 
     m_viz = new RobotViz(m_state);
