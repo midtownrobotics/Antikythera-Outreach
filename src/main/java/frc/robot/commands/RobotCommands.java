@@ -35,7 +35,8 @@ public class RobotCommands {
   private final RobotState m_state;
   private final DriveCommands m_driveCommands;
 
-	private final double multipler = 0.1;
+	private final double multipler = 0.4;
+	private final double multiplerTurn = 0.5;
 
   public RobotCommands(
       Drive drive,
@@ -59,7 +60,7 @@ public class RobotCommands {
     m_hood = hood;
     m_state = state;
     m_driveCommands = new DriveCommands(drive, () -> -controls.get().getLeftX() * (children.get() ? multipler : 1), () -> -controls.get().getLeftY() * (children.get() ? multipler : 1),
-        () -> -controls.get().getRightX() * (children.get() ? 0.3 : 1), m_state);
+        () -> -controls.get().getRightX() * (children.get() ? multiplerTurn : 1), m_state);
   }
 
   public Command stowIntake() {
